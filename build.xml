@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="GestionPrestamos" default="run" basedir=".">
+
+    <description>Gestión de préstamo de equipos electrónicos San Juan de Dios</description>
+
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="main.class" value="gestionprestamos.GestionPrestamos"/>
+
+    <target name="clean" description="Borra los archivos compilados">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile" description="Compila el código fuente">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" includeantruntime="false" encoding="UTF-8"/>
+    </target>
+
+    <target name="jar" depends="compile" description="Genera el ejecutable .jar">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/GestionPrestamos.jar" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="run" depends="compile" description="Ejecuta el programa">
+        <java classname="${main.class}" classpath="${classes.dir}" fork="true"/>
+    </target>
+
+</project>
