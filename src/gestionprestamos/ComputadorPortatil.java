@@ -14,11 +14,15 @@ public class ComputadorPortatil extends Equipo {
         super(serial, marca, tamano, precio);
 
         if (!setSistemaOperativo(sistemaOperativo)) {
-            throw new IllegalArgumentException("Sistema operativo no valido.");
+            throw new IllegalArgumentException(
+                    "Sistema operativo no valido."
+            );
         }
 
         if (!setProcesador(procesador)) {
-            throw new IllegalArgumentException("Procesador no valido.");
+            throw new IllegalArgumentException(
+                    "Procesador no valido."
+            );
         }
     }
 
@@ -54,45 +58,53 @@ public class ComputadorPortatil extends Equipo {
     }
 
     public static String seleccionarSistemaOperativo(Scanner scanner) {
-        while (true) {
-            System.out.println("===== SISTEMA OPERATIVO =====");
-            System.out.println("1. Windows 7");
-            System.out.println("2. Windows 10");
-            System.out.println("3. Windows 11");
-            System.out.print("Seleccione una opcion: ");
+        System.out.println("\n===== SISTEMA OPERATIVO =====");
+        System.out.println("1. Windows 7");
+        System.out.println("2. Windows 10");
+        System.out.println("3. Windows 11");
 
-            String opcion = scanner.nextLine().trim();
+        int opcion = Validaciones.leerOpcion(
+                scanner,
+                "Seleccione una opcion: ",
+                1,
+                3
+        );
 
-            switch (opcion) {
-                case "1":
-                    return "Windows 7";
-                case "2":
-                    return "Windows 10";
-                case "3":
-                    return "Windows 11";
-                default:
-                    System.out.println("Opcion no valida. Intente nuevamente.");
-            }
+        switch (opcion) {
+            case 1:
+                return "Windows 7";
+            case 2:
+                return "Windows 10";
+            case 3:
+                return "Windows 11";
+            default:
+                throw new IllegalStateException(
+                        "Validaciones devolvio una opcion fuera de rango."
+                );
         }
     }
 
     public static String seleccionarProcesador(Scanner scanner) {
-        while (true) {
-            System.out.println("===== PROCESADOR =====");
-            System.out.println("1. AMD Ryzen");
-            System.out.println("2. Intel Core i5");
-            System.out.print("Seleccione una opcion: ");
+        System.out.println("\n===== PROCESADOR =====");
+        System.out.println("1. AMD Ryzen");
+        System.out.println("2. Intel Core i5");
 
-            String opcion = scanner.nextLine().trim();
+        int opcion = Validaciones.leerOpcion(
+                scanner,
+                "Seleccione una opcion: ",
+                1,
+                2
+        );
 
-            switch (opcion) {
-                case "1":
-                    return "AMD Ryzen";
-                case "2":
-                    return "Intel Core i5";
-                default:
-                    System.out.println("Opcion no valida. Intente nuevamente.");
-            }
+        switch (opcion) {
+            case 1:
+                return "AMD Ryzen";
+            case 2:
+                return "Intel Core i5";
+            default:
+                throw new IllegalStateException(
+                        "Validaciones devolvio una opcion fuera de rango."
+                );
         }
     }
 

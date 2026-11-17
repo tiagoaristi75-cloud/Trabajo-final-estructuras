@@ -20,9 +20,10 @@ public class Menu {
             System.out.println("1. Ingenieria");
             System.out.println("2. Diseno");
             System.out.println("3. Mostrar inventario total");
-            System.out.println("4. Salir");
+            System.out.println("4. Mostrar historial de devoluciones");
+            System.out.println("5. Salir");
 
-            opcion = leerOpcion(1, 4);
+            opcion = leerOpcion(1, 5);
 
             switch (opcion) {
                 case 1:
@@ -38,10 +39,14 @@ public class Menu {
                     break;
 
                 case 4:
+                    gestor.mostrarHistorialDevoluciones();
+                    break;
+
+                case 5:
                     System.out.println("Programa finalizado.");
                     break;
             }
-        } while (opcion != 4);
+        } while (opcion != 5);
 
         scanner.close();
     }
