@@ -28,12 +28,15 @@ public class Menu {
                 case 1:
                     submenu(true);
                     break;
+
                 case 2:
                     submenu(false);
                     break;
+
                 case 3:
                     gestor.imprimirInventarioTotal();
                     break;
+
                 case 4:
                     System.out.println("Programa finalizado.");
                     break;
@@ -66,6 +69,7 @@ public class Menu {
                         gestor.registrarPrestamoDiseno();
                     }
                     break;
+
                 case 2:
                     if (esIngenieria) {
                         gestor.modificarPrestamoIngenieria();
@@ -73,6 +77,7 @@ public class Menu {
                         gestor.modificarPrestamoDiseno();
                     }
                     break;
+
                 case 3:
                     if (esIngenieria) {
                         gestor.devolverEquipoIngenieria();
@@ -80,6 +85,7 @@ public class Menu {
                         gestor.devolverEquipoDiseno();
                     }
                     break;
+
                 case 4:
                     if (esIngenieria) {
                         gestor.buscarEquipoIngenieria();
@@ -87,6 +93,7 @@ public class Menu {
                         gestor.buscarEquipoDiseno();
                     }
                     break;
+
                 case 5:
                     System.out.println("Volviendo al menu principal...");
                     break;
@@ -95,22 +102,11 @@ public class Menu {
     }
 
     private int leerOpcion(int min, int max) {
-        while (true) {
-            System.out.print("Seleccione una opcion: ");
-
-            try {
-                int opcion = Integer.parseInt(scanner.nextLine().trim());
-
-                if (opcion >= min && opcion <= max) {
-                    return opcion;
-                }
-            } catch (NumberFormatException e) {
-                // La entrada no representa un entero.
-            }
-
-            System.out.println(
-                    "Ingrese un numero entre " + min + " y " + max + "."
-            );
-        }
+        return Validaciones.leerOpcion(
+                scanner,
+                "Seleccione una opcion: ",
+                min,
+                max
+        );
     }
 }
