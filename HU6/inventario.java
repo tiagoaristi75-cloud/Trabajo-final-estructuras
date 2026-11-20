@@ -1,3 +1,4 @@
+package HU6;
 import java.util.LinkedList;
 
 
