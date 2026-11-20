@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
-/// HU5: registrar, modificar y devolver prestamos. 
-
+///HU5: registrar, modificar y devolver prestamos. 
 public class Prestamos {
     validaciones v = new validaciones();
     Busquedas busquedas = new Busquedas();
@@ -63,7 +62,6 @@ public class Prestamos {
     }
 
     /// Pide el serial y repite (recursivo) mientras ya exista en el inventario. 
-    
     public String pedirSerial(Inventario inv, Scanner sc) {
         String serial = v.ValidaAlfanumerico(sc, "Serial del equipo: ");
         if (!inv.serialExiste(serial)) {
