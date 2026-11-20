@@ -1,3 +1,4 @@
+package HU4;
 import java.util.Scanner;
 
 
