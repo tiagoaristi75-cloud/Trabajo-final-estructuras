@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
  //Clase principal. Solo crea el menu y llama a los metodos que hacen el trabajo
  //(HU4). No tiene ningun otro metodo aparte del main.
  
