@@ -1,76 +1,40 @@
 package gestionprestamos;
 
-public class EstudianteDiseno {
-
-    private final String cedula;
-    private String nombre;
-    private String apellido;
-    private String telefono;
+public class EstudianteDiseno extends Estudiante {
     private String modalidad;
     private int cantidadAsignaturas;
-    private final int serialEquipo;
 
-    public EstudianteDiseno(String cedula, String nombre, String apellido, String telefono,
-                            String modalidad, int cantidadAsignaturas, int serialEquipo) {
-        this.cedula = cedula;
-        this.nombre = nombre;
-        this.apellido = apellido;
-        this.telefono = telefono;
-        this.modalidad = modalidad;
-        this.cantidadAsignaturas = cantidadAsignaturas;
-        this.serialEquipo = serialEquipo;
+    public EstudianteDiseno(String cedula, String nombre, String apellido,
+            String telefono, String modalidad, int cantidadAsignaturas,
+            String serialEquipo) {
+        super(cedula, nombre, apellido, telefono, serialEquipo);
+        if (!setModalidad(modalidad) || !setCantidadAsignaturas(cantidadAsignaturas)) {
+            throw new IllegalArgumentException("Modalidad o asignaturas no validas.");
+        }
     }
 
-    public String getCedula() {
-        return cedula;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getModalidad() {
-        return modalidad;
-    }
-
-    public int getCantidadAsignaturas() {
-        return cantidadAsignaturas;
-    }
-
-    public int getSerialEquipo() {
-        return serialEquipo;
-    }
-
-    public boolean setNombre(String nombre) {
-        this.nombre = nombre;
-        return true;
-    }
-
-    public boolean setApellido(String apellido) {
-        this.apellido = apellido;
-        return true;
-    }
-
-    public boolean setTelefono(String telefono) {
-        this.telefono = telefono;
-        return true;
-    }
+    public String getModalidad() { return modalidad; }
+    public int getCantidadAsignaturas() { return cantidadAsignaturas; }
 
     public boolean setModalidad(String modalidad) {
-        this.modalidad = modalidad;
+        if (modalidad == null) { return false; }
+        String valor = modalidad.trim().toLowerCase(java.util.Locale.ROOT);
+        if (!valor.equals("virtual") && !valor.equals("presencial")) { return false; }
+        this.modalidad = valor;
         return true;
     }
 
     public boolean setCantidadAsignaturas(int cantidadAsignaturas) {
+        if (cantidadAsignaturas < 1) { return false; }
         this.cantidadAsignaturas = cantidadAsignaturas;
         return true;
+    }
+
+    @Override
+    public void mostrarDatos() {
+        System.out.println("===== ESTUDIANTE DE DISENO =====");
+        mostrarDatosComunes();
+        System.out.println("Modalidad: " + modalidad);
+        System.out.println("Cantidad de asignaturas: " + cantidadAsignaturas);
     }
 }

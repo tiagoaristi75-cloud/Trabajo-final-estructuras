@@ -476,8 +476,8 @@ public class GestorPrestamos {
 
         int semestre = leerEnteroPositivo("Semestre: ");
 
-        float promedio = leerFloatNoNegativo(
-                "Promedio acumulado: "
+        float promedio = Validaciones.leerFloat(
+                scanner, "Promedio acumulado (0 a 5): ", 0.0f, 5.0f
         );
 
         return new EstudianteIngenieria(
