@@ -45,6 +45,11 @@ public class GestorPrestamos {
         }
 
         String serial = pedirTexto("Serial del portatil: ");
+        if (existeSerial(serial)) {
+            System.out.println("Error: ese serial ya esta registrado.");
+            return;
+        }
+
         String nombre = pedirTexto("Nombre: ");
         String apellido = pedirTexto("Apellido: ");
         String telefono = pedirTexto("Telefono: ");
@@ -76,6 +81,11 @@ public class GestorPrestamos {
         }
 
         int serial = pedirEntero("Serial de la tableta (solo numeros): ");
+        if (existeSerial(String.valueOf(serial))) {
+            System.out.println("Error: ese serial ya esta registrado.");
+            return;
+        }
+
         String nombre = pedirTexto("Nombre: ");
         String apellido = pedirTexto("Apellido: ");
         String telefono = pedirTexto("Telefono: ");
@@ -251,7 +261,7 @@ public class GestorPrestamos {
 
     // Un estudiante no puede tener mas de un equipo, sin importar la carrera.
     public boolean existeCedula(String cedula) {
-        return posicionIngeniero(cedula) != -1 || posicionDisenador(cedula) != -1;
+        return buscar(cedula) != null;
     }
 
     // ================= LECTURA DE DATOS =================
@@ -269,13 +279,81 @@ public class GestorPrestamos {
         return Float.parseFloat(pedirTexto(mensaje).replace(',', '.'));
     }
 
+    // ================= BUSQUEDA E INVENTARIO =================
+
     public void buscarEquipoIngenieria() {
+        String serial = pedirTexto("Serial del portatil: ");
+        Equipo equipo = buscar(serial, 1);
+
+        if (equipo == null) {
+            System.out.println("No hay un portatil prestado con ese serial.");
+            return;
+        }
+
+        equipo.mostrarDatos();
+        System.out.println("\nPrestado a:");
+        mostrarEstudiante(ingenieros.get(posicionPortatil(serial)));
     }
 
     public void buscarEquipoDiseno() {
+        String serial = String.valueOf(pedirEntero("Serial de la tableta: "));
+        Equipo equipo = buscar(serial, 2);
+
+        if (equipo == null) {
+            System.out.println("No hay una tableta prestada con ese serial.");
+            return;
+        }
+
+        equipo.mostrarDatos();
+        System.out.println("\nPrestada a:");
+        mostrarEstudiante(disenadores.get(posicionTableta(serial)));
     }
 
     public void imprimirInventarioTotal() {
+        System.out.println("\n===== INVENTARIO TOTAL =====");
+
+        System.out.println("\n--- Prestamos de Ingenieria ---");
+        imprimirPrestamosIngenieria();
+
+        System.out.println("\n--- Prestamos de Diseno ---");
+        imprimirPrestamosDiseno();
+
+        System.out.println("\n--- Orden de entrega de equipos ---");
+        imprimirOrdenEntrega();
+
+        System.out.println("\n--- Historial de devoluciones ---");
+        imprimirHistorialDevoluciones();
+
+        System.out.println("\nPortatiles prestados: " + portatil.size());
+        System.out.println("Tabletas prestadas: " + tableta.size());
+        System.out.println("Devoluciones registradas: " + historialDevoluciones.size());
+    }
+
+    // Sobrecarga: con un solo dato busca un estudiante por cedula.
+    public Object buscar(String cedula) {
+        int posicion = posicionIngeniero(cedula);
+        if (posicion != -1) {
+            return ingenieros.get(posicion);
+        }
+        posicion = posicionDisenador(cedula);
+        if (posicion != -1) {
+            return disenadores.get(posicion);
+        }
+        return null;
+    }
+
+    // Sobrecarga: con serial y tipo busca un equipo (1 = portatil, 2 = tableta).
+    public Equipo buscar(String serial, int tipoEquipo) {
+        if (tipoEquipo == 1) {
+            int posicion = posicionPortatil(serial);
+            return posicion == -1 ? null : portatil.get(posicion);
+        }
+        int posicion = posicionTableta(serial);
+        return posicion == -1 ? null : tableta.get(posicion);
+    }
+
+    public boolean existeSerial(String serial) {
+        return buscar(serial, 1) != null || buscar(serial, 2) != null;
     }
 
     // ================= MANEJO DE LAS ESTRUCTURAS =================
