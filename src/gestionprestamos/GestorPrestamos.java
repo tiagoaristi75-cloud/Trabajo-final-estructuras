@@ -33,22 +33,240 @@ public class GestorPrestamos {
         historialDevoluciones = new Stack<>();
     }
 
+    // ================= REGISTRO =================
+
     public void registrarPrestamoIngenieria() {
+        System.out.println("\n===== REGISTRAR PRESTAMO INGENIERIA =====");
+
+        String cedula = pedirTexto("Cedula: ");
+        if (existeCedula(cedula)) {
+            System.out.println("Error: esta cedula ya tiene un equipo asignado.");
+            return;
+        }
+
+        String serial = pedirTexto("Serial del portatil: ");
+        String nombre = pedirTexto("Nombre: ");
+        String apellido = pedirTexto("Apellido: ");
+        String telefono = pedirTexto("Telefono: ");
+        int semestre = pedirEntero("Semestre: ");
+        float promedio = pedirDecimal("Promedio acumulado: ");
+
+        String marca = pedirTexto("Marca del portatil: ");
+        float tamano = pedirDecimal("Tamano en pulgadas: ");
+        float precio = pedirDecimal("Precio: ");
+        String sistemaOperativo = ComputadorPortatil.seleccionarSistemaOperativo(scanner);
+        String procesador = ComputadorPortatil.seleccionarProcesador(scanner);
+
+        EstudianteIngenieria estudiante = new EstudianteIngenieria(
+                cedula, nombre, apellido, telefono, semestre, promedio, serial);
+        ComputadorPortatil equipo = new ComputadorPortatil(
+                serial, marca, tamano, precio, sistemaOperativo, procesador);
+
+        agregarPrestamo(estudiante, equipo);
+        System.out.println("Prestamo registrado correctamente.");
     }
 
     public void registrarPrestamoDiseno() {
+        System.out.println("\n===== REGISTRAR PRESTAMO DISENO =====");
+
+        String cedula = pedirTexto("Cedula: ");
+        if (existeCedula(cedula)) {
+            System.out.println("Error: esta cedula ya tiene un equipo asignado.");
+            return;
+        }
+
+        int serial = pedirEntero("Serial de la tableta (solo numeros): ");
+        String nombre = pedirTexto("Nombre: ");
+        String apellido = pedirTexto("Apellido: ");
+        String telefono = pedirTexto("Telefono: ");
+        String modalidad = pedirTexto("Modalidad (virtual o presencial): ");
+        int asignaturas = pedirEntero("Cantidad de asignaturas: ");
+
+        String marca = pedirTexto("Marca de la tableta: ");
+        float tamano = pedirDecimal("Tamano en pulgadas: ");
+        float precio = pedirDecimal("Precio: ");
+        String almacenamiento = TabletaGrafica.seleccionarAlmacenamiento(scanner);
+        float peso = pedirDecimal("Peso en kg: ");
+
+        EstudianteDiseno estudiante = new EstudianteDiseno(
+                cedula, nombre, apellido, telefono, modalidad, asignaturas, serial);
+        TabletaGrafica equipo = new TabletaGrafica(
+                String.valueOf(serial), marca, tamano, precio, almacenamiento, peso);
+
+        agregarPrestamo(estudiante, equipo);
+        System.out.println("Prestamo registrado correctamente.");
     }
 
+    // ================= MODIFICACION =================
+
+    // La cedula y el serial se conservan; solo se cambian los demas datos.
     public void modificarPrestamoIngenieria() {
+        System.out.println("\n===== MODIFICAR PRESTAMO INGENIERIA =====");
+
+        int posicion = ubicarPrestamoIngenieria();
+        if (posicion == -1) {
+            System.out.println("Error: no existe un prestamo de Ingenieria con ese dato.");
+            return;
+        }
+
+        EstudianteIngenieria estudiante = ingenieros.get(posicion);
+        ComputadorPortatil equipo = portatil.get(posicion);
+        System.out.println("Cedula " + estudiante.getCedula() + " y serial "
+                + equipo.getSerial() + ": estos datos no se pueden modificar.");
+
+        estudiante.setNombre(pedirTexto("Nombre: "));
+        estudiante.setApellido(pedirTexto("Apellido: "));
+        estudiante.setTelefono(pedirTexto("Telefono: "));
+        estudiante.setSemestre(pedirEntero("Semestre: "));
+        estudiante.setPromedioAcumulado(pedirDecimal("Promedio acumulado: "));
+
+        equipo.setMarca(pedirTexto("Marca del portatil: "));
+        equipo.setTamano(pedirDecimal("Tamano en pulgadas: "));
+        equipo.setPrecio(pedirDecimal("Precio: "));
+        equipo.setSistemaOperativo(ComputadorPortatil.seleccionarSistemaOperativo(scanner));
+        equipo.setProcesador(ComputadorPortatil.seleccionarProcesador(scanner));
+
+        System.out.println("Prestamo modificado correctamente.");
     }
 
     public void modificarPrestamoDiseno() {
+        System.out.println("\n===== MODIFICAR PRESTAMO DISENO =====");
+
+        int posicion = ubicarPrestamoDiseno();
+        if (posicion == -1) {
+            System.out.println("Error: no existe un prestamo de Diseno con ese dato.");
+            return;
+        }
+
+        EstudianteDiseno estudiante = disenadores.get(posicion);
+        TabletaGrafica equipo = tableta.get(posicion);
+        System.out.println("Cedula " + estudiante.getCedula() + " y serial "
+                + equipo.getSerial() + ": estos datos no se pueden modificar.");
+
+        estudiante.setNombre(pedirTexto("Nombre: "));
+        estudiante.setApellido(pedirTexto("Apellido: "));
+        estudiante.setTelefono(pedirTexto("Telefono: "));
+        estudiante.setModalidad(pedirTexto("Modalidad (virtual o presencial): "));
+        estudiante.setCantidadAsignaturas(pedirEntero("Cantidad de asignaturas: "));
+
+        equipo.setMarca(pedirTexto("Marca de la tableta: "));
+        equipo.setTamano(pedirDecimal("Tamano en pulgadas: "));
+        equipo.setPrecio(pedirDecimal("Precio: "));
+        equipo.setAlmacenamiento(TabletaGrafica.seleccionarAlmacenamiento(scanner));
+        equipo.setPeso(pedirDecimal("Peso en kg: "));
+
+        System.out.println("Prestamo modificado correctamente.");
     }
 
+    // Pregunta si se busca por cedula o por serial y devuelve la posicion, o -1.
+    public int ubicarPrestamoIngenieria() {
+        System.out.println("Buscar el prestamo por:");
+        System.out.println("1. Cedula");
+        System.out.println("2. Serial");
+        int opcion = pedirEntero("Seleccione una opcion: ");
+
+        if (opcion == 1) {
+            return posicionIngeniero(pedirTexto("Cedula: "));
+        }
+        return posicionPortatil(pedirTexto("Serial del portatil: "));
+    }
+
+    public int ubicarPrestamoDiseno() {
+        System.out.println("Buscar el prestamo por:");
+        System.out.println("1. Cedula");
+        System.out.println("2. Serial");
+        int opcion = pedirEntero("Seleccione una opcion: ");
+
+        if (opcion == 1) {
+            return posicionDisenador(pedirTexto("Cedula: "));
+        }
+        return posicionTableta(String.valueOf(pedirEntero("Serial de la tableta: ")));
+    }
+
+    // ================= DEVOLUCION =================
+
     public void devolverEquipoIngenieria() {
+        System.out.println("\n===== DEVOLUCION DE PORTATIL =====");
+
+        int posicion = posicionIngeniero(pedirTexto("Cedula: "));
+        if (posicion == -1) {
+            System.out.println("Error: no existe un prestamo de Ingenieria con esa cedula.");
+            return;
+        }
+
+        eliminarPrestamoIngenieria(posicion);
+        System.out.println("Devolucion registrada. El prestamo se elimino del registro.");
     }
 
     public void devolverEquipoDiseno() {
+        System.out.println("\n===== DEVOLUCION DE TABLETA =====");
+
+        int posicion = posicionDisenador(pedirTexto("Cedula: "));
+        if (posicion == -1) {
+            System.out.println("Error: no existe un prestamo de Diseno con esa cedula.");
+            return;
+        }
+
+        eliminarPrestamoDiseno(posicion);
+        System.out.println("Devolucion registrada. El prestamo se elimino del registro.");
+    }
+
+    // ================= POSICIONES =================
+
+    public int posicionIngeniero(String cedula) {
+        for (int i = 0; i < ingenieros.size(); i++) {
+            if (ingenieros.get(i).getCedula().equals(cedula)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int posicionDisenador(String cedula) {
+        for (int i = 0; i < disenadores.size(); i++) {
+            if (disenadores.get(i).getCedula().equals(cedula)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int posicionPortatil(String serial) {
+        for (int i = 0; i < portatil.size(); i++) {
+            if (portatil.get(i).getSerial().equalsIgnoreCase(serial)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public int posicionTableta(String serial) {
+        for (int i = 0; i < tableta.size(); i++) {
+            if (tableta.get(i).getSerial().equals(serial)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    // Un estudiante no puede tener mas de un equipo, sin importar la carrera.
+    public boolean existeCedula(String cedula) {
+        return posicionIngeniero(cedula) != -1 || posicionDisenador(cedula) != -1;
+    }
+
+    // ================= LECTURA DE DATOS =================
+
+    public String pedirTexto(String mensaje) {
+        System.out.print(mensaje);
+        return scanner.nextLine().trim();
+    }
+
+    public int pedirEntero(String mensaje) {
+        return Integer.parseInt(pedirTexto(mensaje));
+    }
+
+    public float pedirDecimal(String mensaje) {
+        return Float.parseFloat(pedirTexto(mensaje).replace(',', '.'));
     }
 
     public void buscarEquipoIngenieria() {
