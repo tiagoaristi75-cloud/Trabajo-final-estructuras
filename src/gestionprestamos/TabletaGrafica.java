@@ -22,12 +22,21 @@ public class TabletaGrafica extends Equipo {
         return peso;
     }
 
+    // Solo se aceptan las capacidades del submenu.
     public boolean setAlmacenamiento(String almacenamiento) {
-        this.almacenamiento = almacenamiento;
-        return true;
+        if ("256 GB".equals(almacenamiento)
+                || "512 GB".equals(almacenamiento)
+                || "1 TB".equals(almacenamiento)) {
+            this.almacenamiento = almacenamiento;
+            return true;
+        }
+        return false;
     }
 
     public boolean setPeso(float peso) {
+        if (peso <= 0) {
+            return false;
+        }
         this.peso = peso;
         return true;
     }
@@ -37,8 +46,7 @@ public class TabletaGrafica extends Equipo {
         System.out.println("1. 256 GB");
         System.out.println("2. 512 GB");
         System.out.println("3. 1 TB");
-        System.out.print("Seleccione una opcion: ");
-        int opcion = Integer.parseInt(scanner.nextLine().trim());
+        int opcion = Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", 1, 3);
 
         switch (opcion) {
             case 1:

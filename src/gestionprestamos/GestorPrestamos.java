@@ -38,27 +38,27 @@ public class GestorPrestamos {
     public void registrarPrestamoIngenieria() {
         System.out.println("\n===== REGISTRAR PRESTAMO INGENIERIA =====");
 
-        String cedula = pedirTexto("Cedula: ");
+        String cedula = leerCedula();
         if (existeCedula(cedula)) {
             System.out.println("Error: esta cedula ya tiene un equipo asignado.");
             return;
         }
 
-        String serial = pedirTexto("Serial del portatil: ");
+        String serial = Validaciones.leerSerial(scanner, "Serial del portatil: ");
         if (existeSerial(serial)) {
             System.out.println("Error: ese serial ya esta registrado.");
             return;
         }
 
-        String nombre = pedirTexto("Nombre: ");
-        String apellido = pedirTexto("Apellido: ");
-        String telefono = pedirTexto("Telefono: ");
-        int semestre = pedirEntero("Semestre: ");
-        float promedio = pedirDecimal("Promedio acumulado: ");
+        String nombre = Validaciones.leerTexto(scanner, "Nombre: ");
+        String apellido = Validaciones.leerTexto(scanner, "Apellido: ");
+        String telefono = leerTelefono();
+        int semestre = Validaciones.leerOpcion(scanner, "Semestre (1 a 10): ", 1, 10);
+        float promedio = Validaciones.leerFloat(scanner, "Promedio acumulado (0 a 5): ", 0, 5);
 
-        String marca = pedirTexto("Marca del portatil: ");
-        float tamano = pedirDecimal("Tamano en pulgadas: ");
-        float precio = pedirDecimal("Precio: ");
+        String marca = Validaciones.leerTexto(scanner, "Marca del portatil: ");
+        float tamano = Validaciones.leerFloat(scanner, "Tamano en pulgadas: ", 1, 30);
+        float precio = Validaciones.leerFloat(scanner, "Precio: ", 0, 50000000);
         String sistemaOperativo = ComputadorPortatil.seleccionarSistemaOperativo(scanner);
         String procesador = ComputadorPortatil.seleccionarProcesador(scanner);
 
@@ -74,29 +74,29 @@ public class GestorPrestamos {
     public void registrarPrestamoDiseno() {
         System.out.println("\n===== REGISTRAR PRESTAMO DISENO =====");
 
-        String cedula = pedirTexto("Cedula: ");
+        String cedula = leerCedula();
         if (existeCedula(cedula)) {
             System.out.println("Error: esta cedula ya tiene un equipo asignado.");
             return;
         }
 
-        int serial = pedirEntero("Serial de la tableta (solo numeros): ");
+        int serial = Validaciones.leerEntero(scanner, "Serial de la tableta (solo numeros): ");
         if (existeSerial(String.valueOf(serial))) {
             System.out.println("Error: ese serial ya esta registrado.");
             return;
         }
 
-        String nombre = pedirTexto("Nombre: ");
-        String apellido = pedirTexto("Apellido: ");
-        String telefono = pedirTexto("Telefono: ");
-        String modalidad = pedirTexto("Modalidad (virtual o presencial): ");
-        int asignaturas = pedirEntero("Cantidad de asignaturas: ");
+        String nombre = Validaciones.leerTexto(scanner, "Nombre: ");
+        String apellido = Validaciones.leerTexto(scanner, "Apellido: ");
+        String telefono = leerTelefono();
+        String modalidad = Validaciones.leerModalidad(scanner);
+        int asignaturas = Validaciones.leerOpcion(scanner, "Cantidad de asignaturas (1 a 10): ", 1, 10);
 
-        String marca = pedirTexto("Marca de la tableta: ");
-        float tamano = pedirDecimal("Tamano en pulgadas: ");
-        float precio = pedirDecimal("Precio: ");
+        String marca = Validaciones.leerTexto(scanner, "Marca de la tableta: ");
+        float tamano = Validaciones.leerFloat(scanner, "Tamano en pulgadas: ", 1, 30);
+        float precio = Validaciones.leerFloat(scanner, "Precio: ", 0, 50000000);
         String almacenamiento = TabletaGrafica.seleccionarAlmacenamiento(scanner);
-        float peso = pedirDecimal("Peso en kg: ");
+        float peso = Validaciones.leerFloat(scanner, "Peso en kg: ", 0.1f, 10);
 
         EstudianteDiseno estudiante = new EstudianteDiseno(
                 cedula, nombre, apellido, telefono, modalidad, asignaturas, serial);
@@ -124,15 +124,15 @@ public class GestorPrestamos {
         System.out.println("Cedula " + estudiante.getCedula() + " y serial "
                 + equipo.getSerial() + ": estos datos no se pueden modificar.");
 
-        estudiante.setNombre(pedirTexto("Nombre: "));
-        estudiante.setApellido(pedirTexto("Apellido: "));
-        estudiante.setTelefono(pedirTexto("Telefono: "));
-        estudiante.setSemestre(pedirEntero("Semestre: "));
-        estudiante.setPromedioAcumulado(pedirDecimal("Promedio acumulado: "));
+        estudiante.setNombre(Validaciones.leerTexto(scanner, "Nombre: "));
+        estudiante.setApellido(Validaciones.leerTexto(scanner, "Apellido: "));
+        estudiante.setTelefono(leerTelefono());
+        estudiante.setSemestre(Validaciones.leerOpcion(scanner, "Semestre (1 a 10): ", 1, 10));
+        estudiante.setPromedioAcumulado(Validaciones.leerFloat(scanner, "Promedio acumulado (0 a 5): ", 0, 5));
 
-        equipo.setMarca(pedirTexto("Marca del portatil: "));
-        equipo.setTamano(pedirDecimal("Tamano en pulgadas: "));
-        equipo.setPrecio(pedirDecimal("Precio: "));
+        equipo.setMarca(Validaciones.leerTexto(scanner, "Marca del portatil: "));
+        equipo.setTamano(Validaciones.leerFloat(scanner, "Tamano en pulgadas: ", 1, 30));
+        equipo.setPrecio(Validaciones.leerFloat(scanner, "Precio: ", 0, 50000000));
         equipo.setSistemaOperativo(ComputadorPortatil.seleccionarSistemaOperativo(scanner));
         equipo.setProcesador(ComputadorPortatil.seleccionarProcesador(scanner));
 
@@ -153,17 +153,17 @@ public class GestorPrestamos {
         System.out.println("Cedula " + estudiante.getCedula() + " y serial "
                 + equipo.getSerial() + ": estos datos no se pueden modificar.");
 
-        estudiante.setNombre(pedirTexto("Nombre: "));
-        estudiante.setApellido(pedirTexto("Apellido: "));
-        estudiante.setTelefono(pedirTexto("Telefono: "));
-        estudiante.setModalidad(pedirTexto("Modalidad (virtual o presencial): "));
-        estudiante.setCantidadAsignaturas(pedirEntero("Cantidad de asignaturas: "));
+        estudiante.setNombre(Validaciones.leerTexto(scanner, "Nombre: "));
+        estudiante.setApellido(Validaciones.leerTexto(scanner, "Apellido: "));
+        estudiante.setTelefono(leerTelefono());
+        estudiante.setModalidad(Validaciones.leerModalidad(scanner));
+        estudiante.setCantidadAsignaturas(Validaciones.leerOpcion(scanner, "Cantidad de asignaturas (1 a 10): ", 1, 10));
 
-        equipo.setMarca(pedirTexto("Marca de la tableta: "));
-        equipo.setTamano(pedirDecimal("Tamano en pulgadas: "));
-        equipo.setPrecio(pedirDecimal("Precio: "));
+        equipo.setMarca(Validaciones.leerTexto(scanner, "Marca de la tableta: "));
+        equipo.setTamano(Validaciones.leerFloat(scanner, "Tamano en pulgadas: ", 1, 30));
+        equipo.setPrecio(Validaciones.leerFloat(scanner, "Precio: ", 0, 50000000));
         equipo.setAlmacenamiento(TabletaGrafica.seleccionarAlmacenamiento(scanner));
-        equipo.setPeso(pedirDecimal("Peso en kg: "));
+        equipo.setPeso(Validaciones.leerFloat(scanner, "Peso en kg: ", 0.1f, 10));
 
         System.out.println("Prestamo modificado correctamente.");
     }
@@ -173,24 +173,24 @@ public class GestorPrestamos {
         System.out.println("Buscar el prestamo por:");
         System.out.println("1. Cedula");
         System.out.println("2. Serial");
-        int opcion = pedirEntero("Seleccione una opcion: ");
+        int opcion = Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", 1, 2);
 
         if (opcion == 1) {
-            return posicionIngeniero(pedirTexto("Cedula: "));
+            return posicionIngeniero(leerCedula());
         }
-        return posicionPortatil(pedirTexto("Serial del portatil: "));
+        return posicionPortatil(Validaciones.leerSerial(scanner, "Serial del portatil: "));
     }
 
     public int ubicarPrestamoDiseno() {
         System.out.println("Buscar el prestamo por:");
         System.out.println("1. Cedula");
         System.out.println("2. Serial");
-        int opcion = pedirEntero("Seleccione una opcion: ");
+        int opcion = Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", 1, 2);
 
         if (opcion == 1) {
-            return posicionDisenador(pedirTexto("Cedula: "));
+            return posicionDisenador(leerCedula());
         }
-        return posicionTableta(String.valueOf(pedirEntero("Serial de la tableta: ")));
+        return posicionTableta(String.valueOf(Validaciones.leerEntero(scanner, "Serial de la tableta: ")));
     }
 
     // ================= DEVOLUCION =================
@@ -198,7 +198,7 @@ public class GestorPrestamos {
     public void devolverEquipoIngenieria() {
         System.out.println("\n===== DEVOLUCION DE PORTATIL =====");
 
-        int posicion = posicionIngeniero(pedirTexto("Cedula: "));
+        int posicion = posicionIngeniero(leerCedula());
         if (posicion == -1) {
             System.out.println("Error: no existe un prestamo de Ingenieria con esa cedula.");
             return;
@@ -211,7 +211,7 @@ public class GestorPrestamos {
     public void devolverEquipoDiseno() {
         System.out.println("\n===== DEVOLUCION DE TABLETA =====");
 
-        int posicion = posicionDisenador(pedirTexto("Cedula: "));
+        int posicion = posicionDisenador(leerCedula());
         if (posicion == -1) {
             System.out.println("Error: no existe un prestamo de Diseno con esa cedula.");
             return;
@@ -266,23 +266,18 @@ public class GestorPrestamos {
 
     // ================= LECTURA DE DATOS =================
 
-    public String pedirTexto(String mensaje) {
-        System.out.print(mensaje);
-        return scanner.nextLine().trim();
+    public String leerCedula() {
+        return Validaciones.leerNumeroTexto(scanner, "Cedula: ", 6, 10);
     }
 
-    public int pedirEntero(String mensaje) {
-        return Integer.parseInt(pedirTexto(mensaje));
-    }
-
-    public float pedirDecimal(String mensaje) {
-        return Float.parseFloat(pedirTexto(mensaje).replace(',', '.'));
+    public String leerTelefono() {
+        return Validaciones.leerNumeroTexto(scanner, "Telefono: ", 7, 10);
     }
 
     // ================= BUSQUEDA E INVENTARIO =================
 
     public void buscarEquipoIngenieria() {
-        String serial = pedirTexto("Serial del portatil: ");
+        String serial = Validaciones.leerSerial(scanner, "Serial del portatil: ");
         Equipo equipo = buscar(serial, 1);
 
         if (equipo == null) {
@@ -296,7 +291,7 @@ public class GestorPrestamos {
     }
 
     public void buscarEquipoDiseno() {
-        String serial = String.valueOf(pedirEntero("Serial de la tableta: "));
+        String serial = String.valueOf(Validaciones.leerEntero(scanner, "Serial de la tableta: "));
         Equipo equipo = buscar(serial, 2);
 
         if (equipo == null) {

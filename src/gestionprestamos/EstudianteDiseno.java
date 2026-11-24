@@ -50,26 +50,46 @@ public class EstudianteDiseno {
     }
 
     public boolean setNombre(String nombre) {
-        this.nombre = nombre;
+        if (!Validaciones.esTextoValido(nombre, 0)) {
+            return false;
+        }
+        this.nombre = nombre.trim();
         return true;
     }
 
     public boolean setApellido(String apellido) {
-        this.apellido = apellido;
+        if (!Validaciones.esTextoValido(apellido, 0)) {
+            return false;
+        }
+        this.apellido = apellido.trim();
         return true;
     }
 
     public boolean setTelefono(String telefono) {
+        if (!Validaciones.esNumerico(telefono, 0)) {
+            return false;
+        }
         this.telefono = telefono;
         return true;
     }
 
+    // Solo se aceptan las modalidades virtual y presencial.
     public boolean setModalidad(String modalidad) {
-        this.modalidad = modalidad;
+        if (modalidad == null) {
+            return false;
+        }
+        String valor = modalidad.trim().toLowerCase();
+        if (!valor.equals("virtual") && !valor.equals("presencial")) {
+            return false;
+        }
+        this.modalidad = valor;
         return true;
     }
 
     public boolean setCantidadAsignaturas(int cantidadAsignaturas) {
+        if (cantidadAsignaturas < 1) {
+            return false;
+        }
         this.cantidadAsignaturas = cantidadAsignaturas;
         return true;
     }

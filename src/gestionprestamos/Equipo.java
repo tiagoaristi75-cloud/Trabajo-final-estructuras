@@ -30,17 +30,27 @@ public abstract class Equipo {
         return precio;
     }
 
+    // La marca solo admite letras y espacios.
     public boolean setMarca(String marca) {
-        this.marca = marca;
+        if (!Validaciones.esTextoValido(marca, 0)) {
+            return false;
+        }
+        this.marca = marca.trim();
         return true;
     }
 
     public boolean setTamano(float tamano) {
+        if (tamano <= 0) {
+            return false;
+        }
         this.tamano = tamano;
         return true;
     }
 
     public boolean setPrecio(float precio) {
+        if (precio < 0) {
+            return false;
+        }
         this.precio = precio;
         return true;
     }

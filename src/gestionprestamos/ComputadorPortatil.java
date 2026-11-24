@@ -22,14 +22,23 @@ public class ComputadorPortatil extends Equipo {
         return procesador;
     }
 
+    // Solo se aceptan los sistemas del submenu.
     public boolean setSistemaOperativo(String sistemaOperativo) {
-        this.sistemaOperativo = sistemaOperativo;
-        return true;
+        if ("Windows 7".equals(sistemaOperativo)
+                || "Windows 10".equals(sistemaOperativo)
+                || "Windows 11".equals(sistemaOperativo)) {
+            this.sistemaOperativo = sistemaOperativo;
+            return true;
+        }
+        return false;
     }
 
     public boolean setProcesador(String procesador) {
-        this.procesador = procesador;
-        return true;
+        if ("AMD Ryzen".equals(procesador) || "Intel Core i5".equals(procesador)) {
+            this.procesador = procesador;
+            return true;
+        }
+        return false;
     }
 
     public static String seleccionarSistemaOperativo(Scanner scanner) {
@@ -37,8 +46,7 @@ public class ComputadorPortatil extends Equipo {
         System.out.println("1. Windows 7");
         System.out.println("2. Windows 10");
         System.out.println("3. Windows 11");
-        System.out.print("Seleccione una opcion: ");
-        int opcion = Integer.parseInt(scanner.nextLine().trim());
+        int opcion = Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", 1, 3);
 
         switch (opcion) {
             case 1:
@@ -54,8 +62,7 @@ public class ComputadorPortatil extends Equipo {
         System.out.println("\n===== PROCESADOR =====");
         System.out.println("1. AMD Ryzen");
         System.out.println("2. Intel Core i5");
-        System.out.print("Seleccione una opcion: ");
-        int opcion = Integer.parseInt(scanner.nextLine().trim());
+        int opcion = Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", 1, 2);
 
         if (opcion == 1) {
             return "AMD Ryzen";

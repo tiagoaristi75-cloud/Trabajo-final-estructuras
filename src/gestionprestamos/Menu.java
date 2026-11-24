@@ -22,7 +22,7 @@ public class Menu {
             System.out.println("3. Imprimir inventario total");
             System.out.println("4. Salir del programa");
 
-            opcion = leerOpcion();
+            opcion = leerOpcion(1, 4);
 
             switch (opcion) {
                 case 1:
@@ -37,8 +37,6 @@ public class Menu {
                 case 4:
                     System.out.println("Programa finalizado.");
                     break;
-                default:
-                    System.out.println("Opcion no valida.");
             }
         } while (opcion != 4);
 
@@ -57,7 +55,7 @@ public class Menu {
             System.out.println("4. Buscar equipo");
             System.out.println("5. Volver al menu principal");
 
-            opcion = leerOpcion();
+            opcion = leerOpcion(1, 5);
 
             switch (opcion) {
                 case 1:
@@ -91,14 +89,11 @@ public class Menu {
                 case 5:
                     System.out.println("Volviendo al menu principal...");
                     break;
-                default:
-                    System.out.println("Opcion no valida.");
             }
         } while (opcion != 5);
     }
 
-    public int leerOpcion() {
-        System.out.print("Seleccione una opcion: ");
-        return Integer.parseInt(scanner.nextLine().trim());
+    public int leerOpcion(int min, int max) {
+        return Validaciones.leerOpcion(scanner, "Seleccione una opcion: ", min, max);
     }
 }

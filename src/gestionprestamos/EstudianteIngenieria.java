@@ -50,26 +50,42 @@ public class EstudianteIngenieria {
     }
 
     public boolean setNombre(String nombre) {
-        this.nombre = nombre;
+        if (!Validaciones.esTextoValido(nombre, 0)) {
+            return false;
+        }
+        this.nombre = nombre.trim();
         return true;
     }
 
     public boolean setApellido(String apellido) {
-        this.apellido = apellido;
+        if (!Validaciones.esTextoValido(apellido, 0)) {
+            return false;
+        }
+        this.apellido = apellido.trim();
         return true;
     }
 
     public boolean setTelefono(String telefono) {
+        if (!Validaciones.esNumerico(telefono, 0)) {
+            return false;
+        }
         this.telefono = telefono;
         return true;
     }
 
     public boolean setSemestre(int semestre) {
+        if (semestre < 1) {
+            return false;
+        }
         this.semestre = semestre;
         return true;
     }
 
+    // El promedio se maneja en escala de 0 a 5.
     public boolean setPromedioAcumulado(float promedioAcumulado) {
+        if (promedioAcumulado < 0 || promedioAcumulado > 5) {
+            return false;
+        }
         this.promedioAcumulado = promedioAcumulado;
         return true;
     }
